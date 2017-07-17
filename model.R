@@ -1,15 +1,4 @@
-library(randomForest)
-library(xgboost)
-library(e1071)
-library(ROCR)
 library(caret)
-
-accuracy <- function(name, model, xtest, ytest) {
-  pred = prediction(as.numeric(predict(model, xtest)), as.numeric(ytest))
-  auc = performance(pred, measure = "auc")@y.values[[1]]
-  print(paste('AUC for ', name, ' = ', auc))
-  auc
-}
 
 data <- read.csv('data.csv')[2:32]
 size <- nrow(data)
@@ -25,5 +14,5 @@ rF <- caret::train(diagnosis ~ ., training,
 
 svm <- caret::train(diagnosis ~ ., training, method = 'svmLinearWeights')
 
-confusionMatrix(predict(rF, newdata = test), test$diagnosis)
-confusionMatrix(predict(svm, newdata = test), test$diagnosis)
+print(confusionMatrix(predict(rF, newdata = test), test$diagnosis))
+print(confusionMatrix(predict(svm, newdata = test), test$diagnosis))
